@@ -116,3 +116,4 @@ package-lock.json
 .vscode
 .angular
 build
+.DS_Store
