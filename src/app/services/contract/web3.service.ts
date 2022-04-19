@@ -6,12 +6,6 @@ import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { provider } from 'web3-core';
 
-
-
-@Injectable({
-  providedIn: 'root'
-})
-
 @Injectable({
   providedIn: 'root'
 })
