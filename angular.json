@@ -31,10 +31,12 @@
             "inlineStyleLanguage": "css",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/img"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/chessboardjs/www/css/chessboard.css"
             ],
             "scripts": []
           },
