@@ -10,12 +10,9 @@ import { provider } from 'web3-core';
   providedIn: 'root'
 })
 export class Web3Service {
-  public accountsObservable = new Subject<string[]>();
-  web3Modal;
-  web3js:  any;
-  provider: provider | undefined;
-  accounts: string[] | undefined;
-  balance: string | undefined;
+  private web3Modal;
+  private web3js: any;
+  private provider: any;
 
   constructor(@Inject(WEB3) private web3: Web3) {
     const providerOptions = {
@@ -48,7 +45,7 @@ export class Web3Service {
 
     this.web3Modal = new Web3Modal({
       // network: "mainnet", // optional change this with the net you want to use like rinkeby etc
-      cacheProvider: true, // optional
+      cacheProvider: false, // optional
       providerOptions, // required
       theme: {
         background: "rgb(39, 49, 56)",
@@ -65,15 +62,19 @@ export class Web3Service {
     this.provider = await this.web3Modal.connect(); // set provider
     if (this.provider) {
       this.web3js = new Web3(this.provider);
+      this.provider.on("accountsChanged", (accounts: string[]) => {
+        console.log(accounts);
+      });
     } // create web3 instance
-    this.accounts = await this.web3js.eth.getAccounts();
-    return this.accounts;
+
+    let accounts = await this.web3js.eth.getAccounts();
+    return accounts;
   }
 
   async accountInfo(account: any[]){
     const initialvalue = await this.web3js.eth.getBalance(account);
-    this.balance = this.web3js.utils.fromWei(initialvalue , 'ether');
-    return this.balance;
+    let balance = this.web3js.utils.fromWei(initialvalue , 'ether');
+    return balance;
   }
 
 }

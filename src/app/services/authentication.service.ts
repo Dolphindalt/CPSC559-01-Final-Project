@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { BehaviorSubject, Observable, Subject } from "rxjs";
 import { Web3Service } from "./contract/web3.service";
 
 @Injectable({
@@ -6,30 +7,33 @@ import { Web3Service } from "./contract/web3.service";
 })
 export class AuthenticationService {
 
-    private authenticated: boolean = false;
-    private data: string[] | undefined;
-    private address: string | undefined;
+    private authenticated: BehaviorSubject<boolean>;
+    private address: BehaviorSubject<string | undefined>;
 
+    constructor(private web3: Web3Service) {
+      this.authenticated = new BehaviorSubject<boolean>(false);
+      this.address = new BehaviorSubject<string | undefined>(undefined);
 
-    constructor(private web3: Web3Service) {}
+      this.Connect();
+    }
 
     Connect() {
       this.web3.connectAccount().then(response => {
           console.log(response);
-          this.data = response
-          if (this.data) {
-          this.address = this.data[0];
-          this.authenticated = true;
+          let data = response
+          if (data) {
+            this.address.next(data[0]);
+            this.authenticated.next(true);
           }
       });
     }
 
-    get isAuthenticated(): boolean {
-      return this.authenticated;
+    public isAuthenticated(): boolean {
+      return this.authenticated.value;
     }
 
-    get getAddress(): string | undefined {
-      return this.address;
+    public getAddress(): string | undefined {
+      return this.address.value;
     }
 
 }
