@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
 
-import "@openzeppelin/contracts/utils/Strings.sol";
-
 contract NotationReader {
 
   enum Action {
@@ -36,35 +34,38 @@ contract NotationReader {
     buildTokenTable();
   }
 
-  function getToken(uint8 current, bytes memory input) view public returns (Token memory) {
+  function getToken(uint8 marker, bytes memory input) view public returns (Token memory, uint8) {
     uint8 currentState = 0;
     uint8 currentCharacter;
     Action action;
     string memory charactersRead = "";
     while (true) {
-      (currentCharacter, current) = getCharacter(current, bytes(input));
+      (currentCharacter, marker) = getCharacter(marker, input);
       action = chooseAction(currentState, currentCharacter);
       if (action == Action.MOVE) {
-        concatenate(charactersRead, Strings.toString(currentCharacter));
+        charactersRead = concatenate(charactersRead, currentCharacter);
         currentState = scanningTable[pairToKey(currentState, currentCharacter)];
       } else if (action == Action.RECOGNIZE) {
-        return Token({ class: tokenTable[currentState], value: charactersRead });
+        if (marker != input.length) {
+          marker -= 1;
+        }
+        return (Token({ class: tokenTable[currentState], value: charactersRead }), marker);
       } else if (action == Action.ERROR) {
         break;
       }
     }
-    return Token({ class: Terminal.ERROR, value: charactersRead });
+    return (Token({ class: Terminal.ERROR, value: charactersRead }), marker);
   }
 
-  function getCharacter(uint8 current, bytes memory input) pure internal returns (uint8, uint8) {
+  function getCharacter(uint8 marker, bytes memory input) pure internal returns (uint8, uint8) {
     uint8 character;
-    if (current < bytes(input).length) {
-      character = uint8(input[current]);
+    if (marker < bytes(input).length) {
+      character = uint8(input[marker]);
     } else {
       character = 0;
     }
-    current++;
-    return (character, current);
+    marker++;
+    return (character, marker);
   }
 
   function chooseAction(uint8 currentState, uint8 currentCharacter) view internal returns (Action) {
@@ -142,12 +143,12 @@ contract NotationReader {
 
   // Helper function.
   function pairToKey(uint8 state, uint8 character) pure internal returns (uint16) {
-    return uint16(state) | (uint16(character) >> 8);
+    return uint16(state) | (uint16(character) << 8);
   }
 
   // Helper function.
-  function concatenate(string memory s1, string memory s2) public pure returns (string memory) {
-    return string(abi.encodePacked(s1, s2));
+  function concatenate(string memory s1, uint8 s2) public pure returns (string memory) {
+    return string(abi.encodePacked(s1, bytes1(s2)));
   }
 
 }
