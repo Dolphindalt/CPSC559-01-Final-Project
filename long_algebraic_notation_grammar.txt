@@ -1,0 +1,13 @@
+S' -> A
+P -> piece
+P -> ''
+S -> space
+S -> ''
+E -> turn_mod
+E -> ''
+A -> M end
+A -> M A
+A -> ''
+M -> P square square E S
+M -> short_castle E S
+M -> long_castle E S

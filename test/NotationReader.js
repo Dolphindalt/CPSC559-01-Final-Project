@@ -39,7 +39,7 @@ contract("NotationReader", (accounts) => {
         token = result[0];
         marker = result[1]; // Update marker.
         assert.equal(token.value, " ");
-        assert.equal(token.class, 3); // 4 -> SPACE
+        assert.equal(token.class, 3); // 3 -> SPACE
 
         // Good enough for this functional test.
     });
