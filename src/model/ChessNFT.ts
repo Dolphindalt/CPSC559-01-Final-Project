@@ -3,9 +3,9 @@ export class ChessNFT {
     private white: string | undefined; // Optional 
     private black: string | undefined; // Optional 
     private date: string | undefined; // Optional 
-    private moves: string[]; // { "e4", "e5" } { "e4", "2e5" } { "1e4", "2e5" }
+    private moves: string;
 
-    public constructor(moves: string[]) {
+    public constructor(moves: string) {
         this.moves = moves;
     }
 
@@ -17,7 +17,7 @@ export class ChessNFT {
         return this.moves.length;
     }
 
-    public getMoves(): string[] {
+    public getMoves(): string {
         return this.moves;
     }
 
