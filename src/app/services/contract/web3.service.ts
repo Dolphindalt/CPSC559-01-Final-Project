@@ -57,14 +57,11 @@ export class Web3Service {
     });
   }
 
-
-  async connectAccount() {
+  async connectAccount(onAccountsChange: (accounts: string[]) => any) {
     this.provider = await this.web3Modal.connect(); // set provider
     if (this.provider) {
       this.web3js = new Web3(this.provider);
-      this.provider.on("accountsChanged", (accounts: string[]) => {
-        console.log(accounts);
-      });
+      this.provider.on("accountsChanged", onAccountsChange);
     } // create web3 instance
 
     let accounts = await this.web3js.eth.getAccounts();
@@ -76,6 +73,19 @@ export class Web3Service {
     let balance = this.web3js.utils.fromWei(initialvalue , 'ether');
     return balance;
   }
+
+  public async getWeb3(): Promise<any> {
+    if (this.web3js) {
+      return this.web3js;
+    } else {
+      this.provider = await this.web3Modal.connect(); // set provider
+      if (this.provider) {
+        this.web3js = new Web3(this.provider);
+      }
+      return this.web3js;
+    }
+    
+  } 
 
 }
 

@@ -9,23 +9,23 @@ contract ChessGameFactory {
     mapping(uint256 => bool) gameHashSet;
 
     struct ChessGame {
-        bytes game;
+        string game;
         string name;
         string white;
         string black;
         string date;
     }
 
-    function isGameNovel(bytes memory game) view internal returns(bool) {
-        return !gameHashSet[uint256(keccak256(game))];
+    function isGameNovel(string memory game) view internal returns(bool) {
+        return !gameHashSet[uint256(keccak256(bytes(game)))];
     }
 
-    function validateGame(bytes memory game) pure internal returns(bytes memory, bool) {
+    function validateGame(string memory game) pure internal returns(string memory, bool) {
         // TODO: Implement this later.
         return (game, true);
     }
 
-    function createChessGame(uint id, bytes memory game, string calldata name, 
+    function createChessGame(uint id, string memory game, string calldata name, 
         string calldata white, string calldata black, string calldata date) internal {
             bool validationResult;
             (game, validationResult) = validateGame(game);
@@ -37,13 +37,13 @@ contract ChessGameFactory {
             require(newGame == true, "This game already exists as a minted ChessNFT.");
             
             games[id] = ChessGame(game, name, white, black, date);
-            gameHashSet[uint256(keccak256(game))] = true;
+            gameHashSet[uint256(keccak256(bytes(game)))] = true;
             ownerToGames[msg.sender].push(id);
             gameToOwner[id] = msg.sender;
     }
 
     function compareGamesForEquality(ChessGame memory game1, ChessGame memory game2) pure public returns (bool) {
-        return keccak256(game1.game) == keccak256(game2.game);
+        return keccak256(bytes(game1.game)) == keccak256(bytes(game2.game));
     }
 
     function deleteGameFromOwner(ChessGame memory ownedGame, address owner) private {
@@ -86,7 +86,7 @@ contract ChessGameFactory {
         deleteGameFromOwner(ownedGame, owner);
         delete games[game];
         delete gameToOwner[game];
-        delete gameHashSet[uint256(keccak256(ownedGame.game))];
+        delete gameHashSet[uint256(keccak256(bytes(ownedGame.game)))];
     }
 
 }

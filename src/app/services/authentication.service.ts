@@ -17,12 +17,24 @@ export class AuthenticationService {
       this.Connect();
     }
 
-    Connect() {
-      this.web3.connectAccount().then(response => {
+    private onAccountsChange(accounts: string[]): any {
+      console.log("Account change detected: ", accounts);
+      if (accounts) {
+        
+        // Multiple wallets will cause this strange behavior.
+        if (!this.address) {
+          this.address = new BehaviorSubject<string | undefined>(undefined);
+        }
+        
+        this.address.next(accounts[0]);
+      }
+    }
+
+    public Connect() {
+      this.web3.connectAccount(this.onAccountsChange).then(response => {
           console.log(response);
-          let data = response
-          if (data) {
-            this.address.next(data[0]);
+          if (response) {
+            this.address.next(response[0]);
             this.authenticated.next(true);
           }
       });
