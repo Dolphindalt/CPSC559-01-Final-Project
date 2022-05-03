@@ -1,3 +1,19 @@
-<p>Data</p>
-<p>{{game.moves}}</p>
-<p>{{owner}}</p>
+<div class="p-4 my-8 flex flex-col items-center">
+    <p class="mb-4 text-lg text-gray-500 dark:text-gray-400">Owner: {{owner}}</p>
+    <div class="flex w-2/3 p-4 my-8 bg-white rounded-lg order border-gray-200 shadow-md sm:p-6 lg:p-8 dark:bg-gray-800 dark:border-gray-700">
+        <div class="flex-initial shrink">
+            <div class="pb-4 mb-10 border-b border-gray-200 dark:border-gray-800 text-center">
+                <h1 class="inline-block mb-2 text-2xl font-extrabold tracking-tight text-gray-900 dark:text-white">{{game.name}}</h1>
+                <p class="mb-4 text-lg text-gray-500 dark:text-gray-400">{{game.white}} versus {{game.black}}</p>
+                <p *ngIf="game.date" class="mb-4 text-lg text-gray-500 dark:text-gray-400">{{game.date}}</p>
+            </div>
+            <div>
+                <p>{{game.moves}}</p>
+            </div>
+        </div>
+        
+        <div class="flex-initial grow shrink">
+            <app-chess-nft [notation]="game.moves"></app-chess-nft>
+        </div>
+    </div>
+</div>

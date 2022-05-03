@@ -6,6 +6,7 @@ import ChessNFTContract from 'build/contracts/ChessNFT.json';
 import { GlobalConstants } from 'src/app/global-constants';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-mint',
@@ -21,7 +22,8 @@ export class MintComponent implements OnInit {
   constructor(
     private web3: Web3Service,
     private auth: AuthenticationService,
-    private toast: ToastrService
+    private toast: ToastrService,
+    private router: Router
   ) {
     
   }
@@ -33,10 +35,9 @@ export class MintComponent implements OnInit {
       this.chessNFTContract.events.ChessNFTCreated()
         .on("data", (event: any) => {
           let tokenId = event.returnValues.tokenId;
-
-          // TODO: Transfer to the page that displays this NFT.
-
           this.mintingInProgress = false;
+          this.toast.success("Your NFT is minted!");
+          this.router.navigate(["/browse/" + tokenId]);
         })
         .on("error", (error: any) => {
           this.toast.error("Failed to Mint NFT", error);

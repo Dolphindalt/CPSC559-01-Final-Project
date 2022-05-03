@@ -14,7 +14,6 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class NftViewComponent implements OnInit {
 
-  public nft: ChessNFT = new ChessNFT();
   public chessNFTContract: any;
 
   private tokenId: string | null = "";
@@ -49,11 +48,16 @@ export class NftViewComponent implements OnInit {
             let chessGame = data[0];
             let ownerAddress = data[1];
             this.game.name = chessGame.name;
-            this.game.moves = String.fromCharCode(chessGame.game);
+            this.game.moves = chessGame.game;
             this.game.black = chessGame.black;
             this.game.white = chessGame.white;
             this.game.date = chessGame.date;
             this.owner = ownerAddress;
+
+            if (this.game.white == "")
+              this.game.white = "Anonymous";
+            if (this.game.black == "")
+              this.game.black = "Anonymous";
           }).catch((err: any) => {
             console.log(err);
             this.toast.error("Something went wrong!");
