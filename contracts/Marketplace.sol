@@ -85,7 +85,7 @@ contract MarketPlace is ReentrancyGuard {
       msg.value == price,
       "Please submit the asking price in order to complete the purchase"
     );
-    require(sold != true, "This Sale has alredy finnished");
+    require(sold != true, "This Sale has alredy finished");
     emit MarketItemSold(itemId, msg.sender);
 
     idToMarketItem[itemId].seller.transfer(msg.value);
