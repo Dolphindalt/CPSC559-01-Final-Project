@@ -30,7 +30,7 @@ contract ChessNFT is
         return fectchGameByID(tokenId);
     }
 
-    function fetchOwnersTokens(address owner) view public returns (ChessGame[] memory) {
+    function fetchOwnersTokens(address owner) view public returns (uint[] memory, ChessGame[] memory, address) {
         return fetchGamesByOwner(owner);
     }
 

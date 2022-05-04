@@ -1,5 +1,5 @@
 export class GlobalConstants {
 
-    public static chessNFTContractAddress: string = "0x3F850a8Ad95F90906CC09aDc02a26Ec7e0191F75";
+    public static chessNFTContractAddress: string = "0xc11c2B97A3928c4e16dD82938bf8DFC4E56d75A3";
 
 }

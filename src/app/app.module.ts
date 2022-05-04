@@ -15,6 +15,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ToastrModule } from 'ngx-toastr';
 import { NftViewComponent } from './pages/nft-view/nft-view.component';
+import { NftViewThumbnailComponent } from './core/nft-view-thumbnail/nft-view-thumbnail.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -33,7 +34,8 @@ const routes: Routes = [
     CollectionComponent,
     MintComponent,
     BrowseComponent,
-    NftViewComponent
+    NftViewComponent,
+    NftViewThumbnailComponent
   ],
   imports: [
     BrowserModule,

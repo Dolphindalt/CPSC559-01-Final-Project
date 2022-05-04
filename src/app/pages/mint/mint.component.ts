@@ -52,9 +52,6 @@ export class MintComponent implements OnInit {
   }
 
   private mintChessNFT(): void {
-    console.log(this.nft);
-    console.log(this.auth.getAddress());
-
     this.chessNFTContract.methods.mintItem(this.nft.moves, this.nft.name, this.nft.black, this.nft.white, this.nft.date)
       .send({ from: this.auth.getAddress() })
       .on("error", (error: any) => {

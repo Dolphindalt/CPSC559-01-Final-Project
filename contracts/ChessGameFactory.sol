@@ -38,8 +38,6 @@ contract ChessGameFactory {
             
             games[id] = ChessGame(game, name, white, black, date);
             gameHashSet[uint256(keccak256(bytes(game)))] = true;
-            ownerToGames[msg.sender].push(id);
-            gameToOwner[id] = msg.sender;
     }
 
     function compareGamesForEquality(ChessGame memory game1, ChessGame memory game2) pure public returns (bool) {
@@ -72,13 +70,13 @@ contract ChessGameFactory {
         return (gameStruct, owner);
     }
 
-    function fetchGamesByOwner(address owner) view internal returns (ChessGame[] memory) {
+    function fetchGamesByOwner(address owner) view internal returns (uint[] memory, ChessGame[] memory, address) {
         uint len = ownerToGames[owner].length;
         ChessGame[] memory ownersGames = new ChessGame[](len);
         for (uint i = 0; i < len; i++) {
             ownersGames[i] = games[ownerToGames[owner][i]];
         }
-        return ownersGames;
+        return (ownerToGames[owner], ownersGames, owner);
     }
 
     function destroyChessGame(uint game, address owner) internal {

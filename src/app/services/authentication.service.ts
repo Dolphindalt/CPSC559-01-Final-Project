@@ -30,9 +30,8 @@ export class AuthenticationService {
       }
     }
 
-    public Connect() {
-      this.web3.connectAccount(this.onAccountsChange).then(response => {
-          console.log(response);
+    public async Connect(): Promise<void> {
+      return this.web3.connectAccount(this.onAccountsChange).then(response => {
           if (response) {
             this.address.next(response[0]);
             this.authenticated.next(true);

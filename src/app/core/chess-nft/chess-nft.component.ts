@@ -10,7 +10,7 @@ const ChessBoard = require('chessboardjs/www/js/chessboard');
 })
 export class ChessNFTComponent implements OnInit, AfterViewInit, OnChanges {
 
-  public static boardNo = 0;
+  private static boardNo = 0;
 
   public boardId: number;
   @Input() public notation: string = "";
@@ -61,10 +61,13 @@ export class ChessNFTComponent implements OnInit, AfterViewInit, OnChanges {
     this.fenMoves.push(this.chessLogic.fen());
 
     let splitNotation = this.notation.split(" ");
+    let lastIndex = 0;
     for (let idx in splitNotation) {
-      console.log(splitNotation[idx]);
       this.chessLogic.move(splitNotation[idx], { sloppy: true });
-      this.fenMoves.push(this.chessLogic.fen());
+      if (this.fenMoves.length != 0 && this.fenMoves[lastIndex] != this.chessLogic.fen()) {
+        this.fenMoves.push(this.chessLogic.fen());
+        lastIndex++;
+      }
     }
 
     if (this.fenMoves.length > 0)
