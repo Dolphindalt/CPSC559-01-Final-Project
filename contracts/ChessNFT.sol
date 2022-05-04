@@ -34,9 +34,9 @@ contract ChessNFT is
         return fetchGamesByOwner(owner);
     }
 
-    function mintItem(bytes memory game, string calldata name, 
+    function mintItem(string memory game, string calldata name, 
         string calldata white, string calldata black, string calldata date) public {
-            require(game.length <= gameMaximumCharacters, "Game length is too long, must be 1024 bytes or less.");
+            require(bytes(game).length <= gameMaximumCharacters, "Game length is too long, must be 1024 bytes or less.");
             require(bytes(white).length <= stringMaximumCharacters, "Metadata is too long.");
             require(bytes(black).length <= stringMaximumCharacters, "Metadata is too long.");
             require(bytes(name).length <= stringMaximumCharacters, "Metadata is too long.");

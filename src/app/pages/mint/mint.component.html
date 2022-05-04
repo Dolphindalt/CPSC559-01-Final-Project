@@ -1,1 +1,69 @@
-<p>mint works!</p>
+<div class="flex flex-col justify-center items-center h-screen">
+    <form id="mintingForm" *ngIf="!mintingInProgress" #mintingForm="ngForm" (ngSubmit)="this.onSubmit()" class="w-full max-w-lg">
+        <div class="flex flex-wrap -mx-3 mb-6">
+            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="whitePlayerName">
+                White Player Name
+                </label>
+                <input [(ngModel)]="nft.white" name="white" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="whitePlayerName" type="text" placeholder="Player name">
+            </div>
+            <div class="w-full md:w-1/2 px-3">
+                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="blackPlayerName">
+                Black Player Name
+                </label>
+                <input [(ngModel)]="nft.black" name="black" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="blackPlayerName" type="text" placeholder="Player name">
+            </div>
+        </div>
+        <div class="flex flex-wrap -mx-3 mb-6">
+            <div class="w-full px-3">
+                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="moves">
+                    Long Algebraic Notation
+                </label>
+                <input [(ngModel)]="nft.moves" #moves="ngModel" name="moves" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="moves" type="text" placeholder="e2e4 e7e5..." required minlength="4">
+                <p class="text-gray-600 text-xs italic">Ensure the game is in a valid long algebraic notation form.</p>
+                <div *ngIf="moves.invalid && (moves.dirty || moves.touched)">
+                    <p *ngIf="moves.errors?.['required']" class="text-red-500 text-xs italic">The game notation is required.</p>
+                    <p *ngIf="moves.errors?.['minlength']" class="text-red-500 text-xs italic">The notation is too short.</p>
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-wrap -mx-3 mb-6">
+            <div class="w-full px-3">
+                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="gameName">
+                    Game Name
+                </label>
+                <input [(ngModel)]="nft.name" #name="ngModel" name="name" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="gameName" type="text" placeholder="My Game" required minlength="3">
+                <p class="text-gray-600 text-xs italic">Give your game a name to help distinguish it from others.</p>
+                <div *ngIf="name.invalid && (name.dirty || name.touched)">
+                    <p *ngIf="name.errors?.['required']" class="text-red-500 text-xs italic">A game name is required.</p>
+                    <p *ngIf="name.errors?.['minlength']" class="text-red-500 text-xs italic">The name game name must be longer.</p>
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-wrap -mx-3 mb-6">
+            <div class="w-full px-3">
+                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="date">
+                    Date and Time
+                </label>
+                <input [(ngModel)]="nft.date" name="date" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="gameName" type="datetime-local" placeholder="">
+                <p class="text-gray-600 text-xs italic">The date and time the game was played. Leave empty if unknown.</p>
+            </div>
+        </div>
+        <div class="md:flex md:items-center">
+            <div class="md:w-1/3"></div>
+            <div class="md:w-2/3">
+                <button [disabled]="!mintingForm.form.valid" class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="submit">
+                    Mint
+                </button>
+            </div>
+        </div>
+    </form>
+    <div *ngIf="mintingInProgress" class="w-full px-3 justify-center flex flex-col items-center">
+        <div class="flex flex-wrap mb-6 items-center justify-center flex-col">
+            <span class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                Transaction In Progress
+            </span>
+            <img src="/assets/images/download.gif" />
+        </div>
+    </div>
+</div>
