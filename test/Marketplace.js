@@ -2,7 +2,7 @@ const { assert } = require("chai");
 const truffleAssert = require('truffle-assertions');
 
 const ChessNFT = artifacts.require("ChessNFT.sol");
-const Marketplace = artifacts.require("Marketplace.sol");
+const MarketPlace = artifacts.require("MarketPlace.sol");
 
 function toBytes(string) {
 	const buffer = Buffer.from(string, 'utf8');
@@ -14,7 +14,7 @@ function toBytes(string) {
 }
 
 
-contract("Marketplace", (accounts) => {
+contract("MarketPlace", (accounts) => {
     let [alice, bob] = accounts;
     let contractInstance;
     let mpContractInstance;
@@ -22,7 +22,7 @@ contract("Marketplace", (accounts) => {
 
     beforeEach(async () => {
         contractInstance = await ChessNFT.new();
-        mpContractInstance = await Marketplace.new();
+        mpContractInstance = await MarketPlace.new();
     });
 
     it("Should be able to create market item, market sale, and fetch items", async () => {
