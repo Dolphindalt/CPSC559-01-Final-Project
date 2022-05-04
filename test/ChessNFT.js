@@ -3,15 +3,6 @@ const truffleAssert = require('truffle-assertions');
 
 const ChessNFT = artifacts.require("ChessNFT.sol");
 
-function toBytes(string) {
-	const buffer = Buffer.from(string, 'utf8');
-	const result = Array(buffer.length);
-	for (var i = 0; i < buffer.length; i++) {
-		result[i] = buffer[i];
-	}
-	return result;
-}
-
 contract("ChessNFT", (accounts) => {
     let [alice] = accounts;
     let contractInstance;
@@ -22,7 +13,7 @@ contract("ChessNFT", (accounts) => {
     });
 
     it("should be able to mint a chess game into an NFT", async () => {
-        let game = toBytes(validGame);
+        let game = validGame;
         let white = "Hegel";
         let black = "Immanuel Kant";
         let date = Date.now().toString();
@@ -37,7 +28,7 @@ contract("ChessNFT", (accounts) => {
             let metadata = getResult[0];
             let owner = getResult[1];
 
-            assert.equal(metadata.black, black);
+            assert.equal(String(metadata['black']), black);
             assert.equal(owner, alice);
 
             await contractInstance.destroyToken(mintedToken, { from: alice });

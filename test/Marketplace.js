@@ -4,16 +4,6 @@ const truffleAssert = require('truffle-assertions');
 const ChessNFT = artifacts.require("ChessNFT.sol");
 const MarketPlace = artifacts.require("MarketPlace.sol");
 
-function toBytes(string) {
-	const buffer = Buffer.from(string, 'utf8');
-	const result = Array(buffer.length);
-	for (var i = 0; i < buffer.length; i++) {
-		result[i] = buffer[i];
-	}
-	return result;
-}
-
-
 contract("MarketPlace", (accounts) => {
     let [alice, bob] = accounts;
     let contractInstance;
@@ -26,7 +16,7 @@ contract("MarketPlace", (accounts) => {
     });
 
     it("Should be able to create market item, market sale, and fetch items", async () => {
-        let game = toBytes(validGame);
+        let game = validGame;
         let white = "Hegel";
         let black = "Immanuel Kant";
         let date = Date.now().toString();
