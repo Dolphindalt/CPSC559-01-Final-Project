@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnChanges, OnInit } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, Input, OnChanges, OnInit } from '@angular/core';
 
 const Chess = require('chess.js');
 const ChessBoard = require('chessboardjs/www/js/chessboard');
@@ -10,12 +10,12 @@ const ChessBoard = require('chessboardjs/www/js/chessboard');
 })
 export class ChessNFTComponent implements OnInit, AfterViewInit, OnChanges {
 
-  private static boardNo = 0;
+  private static boardNo = 1000;
 
   public boardId: number;
   @Input() public notation: string = "";
   public chessLogic;
-  public chessDisplay: any;
+  public chessDisplay: any = false;
 
   private fenMoves: string[] = [];
   private currentMove: number = 0;
@@ -27,12 +27,21 @@ export class ChessNFTComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   ngAfterViewInit(): void {
-    this.chessDisplay = ChessBoard('board' + this.boardId, 'start');
+    console.log("Second: ", this.boardId);
+    this.chessDisplay = ChessBoard('board' + this.boardId, {
+      snapbackSpeed: 10,
+      snapSpeed: 10,
+      trashSpeed: 10,
+      moveSpeed: 10,
+      showErrors: 'console',
+      position: 'start'
+    });
   }
 
   ngOnChanges(): void {
     if (this.notation) {
       this.buildMoveConfigurations();
+      this.chessDisplay.position(this.fenMoves[this.currentMove]);
     }
   }
 
@@ -40,7 +49,6 @@ export class ChessNFTComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   public nextMove(): void {
-    console.log("Next move");
     if (this.currentMove + 1 < this.fenMoves.length) {
       this.currentMove += 1;
       this.chessDisplay.position(this.fenMoves[this.currentMove]);
@@ -48,7 +56,6 @@ export class ChessNFTComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   public prevMove(): void {
-    console.log("Previous move");
     if (this.currentMove - 1 >= 0) {
       this.currentMove -= 1;
       this.chessDisplay.position(this.fenMoves[this.currentMove]);
@@ -72,8 +79,6 @@ export class ChessNFTComponent implements OnInit, AfterViewInit, OnChanges {
 
     if (this.fenMoves.length > 0)
       this.currentMove = this.fenMoves.length - 1;
-    
-    this.chessDisplay.position(this.fenMoves[this.currentMove]);
   }
 
 }
