@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { ChessNFT } from 'src/model/ChessNFT';
 import { Web3Service } from 'src/app/services/contract/web3.service';
 import ChessNFTContract from 'build/contracts/ChessNFT.json'; 

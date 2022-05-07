@@ -17,6 +17,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { NftViewComponent } from './pages/nft-view/nft-view.component';
 import { NftViewThumbnailComponent } from './core/nft-view-thumbnail/nft-view-thumbnail.component';
 import { SellComponent } from './pages/sell/sell.component';
+import { ChessValidatorDirective } from './core/chess.validator';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -39,7 +40,8 @@ const routes: Routes = [
     BrowseComponent,
     NftViewComponent,
     NftViewThumbnailComponent,
-    SellComponent
+    SellComponent,
+    ChessValidatorDirective
   ],
   imports: [
     BrowserModule,

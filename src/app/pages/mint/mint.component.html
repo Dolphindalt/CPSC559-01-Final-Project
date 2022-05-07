@@ -17,13 +17,14 @@
         <div class="flex flex-wrap -mx-3 mb-6">
             <div class="w-full px-3">
                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="moves">
-                    Long Algebraic Notation
+                    Algebraic Notation
                 </label>
-                <input [(ngModel)]="nft.moves" #moves="ngModel" name="moves" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="moves" type="text" placeholder="e2e4 e7e5..." required minlength="4">
+                <input [(ngModel)]="nft.moves" #moves="ngModel" name="moves" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="moves" type="text" placeholder="e2e4 e7e5..." required minlength="4" validgame >
                 <p class="text-gray-600 text-xs italic">Ensure the game is in a valid long algebraic notation form.</p>
                 <div *ngIf="moves.invalid && (moves.dirty || moves.touched)">
                     <p *ngIf="moves.errors?.['required']" class="text-red-500 text-xs italic">The game notation is required.</p>
                     <p *ngIf="moves.errors?.['minlength']" class="text-red-500 text-xs italic">The notation is too short.</p>
+                    <p *ngIf="moves.errors?.['chess']" class="text-red-500 text-xs italic">The notation is in an invalid form.</p>
                 </div>
             </div>
         </div>
