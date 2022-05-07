@@ -1,4 +1,4 @@
-<div class="p-4 my-8 flex flex-col items-center">
+<div *ngIf="!this.transactionInProgress" class="p-4 my-8 flex flex-col items-center">
     <p class="mb-4 text-lg text-gray-500 dark:text-gray-400">Owner: {{owner}}</p>
     <div class="flex gap-4 w-2/3">
         <div class="flex-initial shrink pl-3 pr-3 p-4 my-8 bg-white rounded-lg order border-gray-200 shadow-md sm:p-6 lg:p-8 dark:bg-gray-800 dark:border-gray-700">
@@ -7,7 +7,7 @@
                 <p class="mb-4 text-lg text-gray-500 dark:text-gray-400">{{game.white}} versus {{game.black}}</p>
                 <p *ngIf="game.date" class="mb-4 text-lg text-gray-500 dark:text-gray-400">{{game.date}}</p>
             </div>
-            <div>
+            <div class="py-2 px-4">
                 <p>{{game.moves}}</p>
             </div>
         </div>
@@ -15,5 +15,22 @@
         <div class="flex-initial grow shrink">
             <app-chess-nft [notation]="game.moves"></app-chess-nft>
         </div>
+    </div>
+</div>
+<div *ngIf="this.marketItem != null && this.marketItem.sold == false && !this.transactionInProgress" class="flex flex-col items-center">
+    <div class="flex-initial shrink bg-white rounded-lg order border-gray-200 shadow-md sm:p-6 lg:p-8 dark:bg-gray-800 dark:border-gray-700">
+        <div class="flex items-center justify-center gap-4">
+            <p>Price: {{this.web3lit.utils.fromWei(this.marketItem.price)}} ETH</p>
+            <button *ngIf="this.auth.getAddress() != owner" (click)="onBuyButton(this.marketItem.itemId)" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">Buy</button>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="this.transactionInProgress" class="p-10">  
+    <div class="flex flex-wrap mb-6 items-center justify-center flex-col">
+        <span class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+            Transaction In Progress
+        </span>
+        <img src="/assets/images/download.gif" />
     </div>
 </div>

@@ -16,6 +16,7 @@ import { CommonModule } from '@angular/common';
 import { ToastrModule } from 'ngx-toastr';
 import { NftViewComponent } from './pages/nft-view/nft-view.component';
 import { NftViewThumbnailComponent } from './core/nft-view-thumbnail/nft-view-thumbnail.component';
+import { SellComponent } from './pages/sell/sell.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -23,7 +24,9 @@ const routes: Routes = [
   { path: 'collection', component: CollectionComponent },
   { path: 'browse', component: BrowseComponent },
   { path: 'mint', component: MintComponent },
-  { path: 'browse/:tokenId', component: NftViewComponent }
+  { path: 'browse/:tokenId', component: NftViewComponent },
+  { path: 'browse/:tokenId/:itemId', component: NftViewComponent },
+  { path: 'sell/:tokenId', component: SellComponent }
 ];
 
 @NgModule({
@@ -35,7 +38,8 @@ const routes: Routes = [
     MintComponent,
     BrowseComponent,
     NftViewComponent,
-    NftViewThumbnailComponent
+    NftViewThumbnailComponent,
+    SellComponent
   ],
   imports: [
     BrowserModule,

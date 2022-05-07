@@ -6,6 +6,9 @@ import { ChessNFT } from 'src/model/ChessNFT';
 import ChessNFTContract from 'build/contracts/ChessNFT.json'; 
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ToastrService } from 'ngx-toastr';
+import { MarketItem } from 'src/model/MarketItem';
+import MarketplaceContract from 'build/contracts/MarketPlace.json'; 
+import { MarketItemSoldEvent } from 'src/model/MarketItemSoldEvent';
 
 @Component({
   selector: 'app-nft-view',
@@ -14,16 +17,24 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class NftViewComponent implements OnInit {
 
-  public chessNFTContract: any;
+  public transactionInProgress: boolean = false;
+
+  private chessNFTContract: any;
+  private marketplaceContract: any;
 
   private tokenId: string | null = "";
+  private itemId: string | null = "";
+  
   public game: ChessNFT = new ChessNFT();
   public owner: string = "";
+  public marketItem: MarketItem | null = null;
+
+  public web3lit = require('web3');
 
   constructor(
     private web3: Web3Service,
     private route: ActivatedRoute,
-    private auth: AuthenticationService,
+    public auth: AuthenticationService,
     private toast: ToastrService
   ) {
 
@@ -32,9 +43,11 @@ export class NftViewComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.tokenId = params['tokenId'];
+      this.itemId = params['itemId'];
     });
 
     this.tokenId = this.route.snapshot.paramMap.get("tokenId");
+    this.itemId = this.route.snapshot.paramMap.get("itemId");
 
     if (this.tokenId != null) {
 
@@ -62,10 +75,39 @@ export class NftViewComponent implements OnInit {
             console.log(err);
             this.toast.error("Something went wrong!");
           });
+
+          if (this.itemId != null) {
+            this.marketplaceContract = new web3js.eth.Contract(MarketplaceContract.abi, GlobalConstants.marketplaceContractAddress);
+          
+            this.marketplaceContract.methods.fetchMarketItem(this.itemId)
+              .call({ from: this.auth.getAddress() })
+              .then((data: any) => {
+                this.marketItem = data;
+              });
+
+            this.marketplaceContract.events.MarketItemSold()
+              .on("data", (event: any) => {
+                window.location.reload();
+                let marketItemSold: MarketItemSoldEvent = event.returnValues;
+                this.transactionInProgress = false;
+                this.toast.success("Purchase for market item " + marketItemSold.itemId + " completed!");
+              });
+          }
       });
 
     }
 
+  }
+
+  onBuyButton(itemId: string | null): void {
+    this.transactionInProgress = true;
+    this.marketplaceContract.methods.createMarketSale(GlobalConstants.chessNFTContractAddress, itemId)
+      .send({ from: this.auth.getAddress(), value: this.marketItem?.price })
+      .on('error', (error: any) => {
+        console.log(error);
+        this.toast.warning("Purchase failed!");
+        this.transactionInProgress = false;
+      });
   }
 
 

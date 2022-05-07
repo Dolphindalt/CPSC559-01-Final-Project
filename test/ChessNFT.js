@@ -4,7 +4,7 @@ const truffleAssert = require('truffle-assertions');
 const ChessNFT = artifacts.require("ChessNFT.sol");
 
 contract("ChessNFT", (accounts) => {
-    let [alice] = accounts;
+    let [alice, bob] = accounts;
     let contractInstance;
     let validGame = "e2e4 e7e5 Ng1f3 Nb8c6 Bf1b5 a7a6 Bb5xc6 d7xc6 d2d3 Bf8b4+ Nb1c3 Ng8f6 O-O Bb4xc3";
 

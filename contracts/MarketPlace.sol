@@ -111,4 +111,8 @@ contract MarketPlace is ReentrancyGuard {
     }
     return items;
   }
+
+  function fetchMarketItem(uint256 itemId) public view returns (MarketItem memory) {
+    return idToMarketItem[itemId];
+  }
 }

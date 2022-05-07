@@ -27,7 +27,6 @@ export class ChessNFTComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   ngAfterViewInit(): void {
-    console.log("Second: ", this.boardId);
     this.chessDisplay = ChessBoard('board' + this.boardId, {
       snapbackSpeed: 10,
       snapSpeed: 10,

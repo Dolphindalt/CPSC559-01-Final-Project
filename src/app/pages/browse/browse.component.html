@@ -1,1 +1,20 @@
-<p>browse works!</p>
+<div class="mt-1 flex flex-col items-center">
+    <div class="pb-4 mb-1 border-b border-gray-200 dark:border-gray-800 text-center">
+        <h1 class="inline-block mb-2 text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">Marketplace</h1>
+    </div>
+</div>
+
+<div *ngIf="this.marketItems.length != 0" class="flex items-center justify-center flex-wrap">
+    <div class="shrink" *ngFor="let nft of this.marketItems; let i = index">
+        <app-nft-view-thumbnail [marketItem]="this.marketItems[i]" [tokenId]="this.marketItems[i].tokenId" [game]="this.games[i]" [owner]="this.owners[i]"></app-nft-view-thumbnail>
+    </div>
+</div>
+
+<div *ngIf="this.marketItems.length == 0" class="p-4 my-8 flex flex-col items-center">
+    <div class="w-2/3 p-4 my-8 bg-white rounded-lg order border-gray-200 shadow-md sm:p-6 lg:p-8 dark:bg-gray-800 dark:border-gray-700">
+        <div>
+            <p>The market is empty.</p>
+        </div>
+    </div>
+    
+</div>

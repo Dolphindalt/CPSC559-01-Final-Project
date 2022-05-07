@@ -28,6 +28,7 @@ export class AuthenticationService {
         
         this.address.next(accounts[0]);
       }
+      window.location.reload();
     }
 
     public async Connect(): Promise<void> {

@@ -47,7 +47,9 @@ contract ChessGameFactory {
     function deleteGameFromOwner(ChessGame memory ownedGame, address owner) private {
         for (uint i = 0; i < ownerToGames[owner].length; i++) {
             if (compareGamesForEquality(ownedGame, games[ownerToGames[owner][i]])) {
+                // Needs to be changed to fill this hole.
                 delete ownerToGames[owner][i];
+                delete ownerToGames[owner];
                 break;
             }
         }
